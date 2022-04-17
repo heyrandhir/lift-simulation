@@ -1,21 +1,21 @@
 let currLiftPositionArr = []
 
-const validateLiftAndFloorEntries = (e)=>{
+const validateLiftAndFloorEntries = ()=>{
     
-    let noOfFloor = document.getElementById('noOfFloor').value
+    let noOfFloors = document.getElementById('noOfFloors').value
     let noOfLifts = document.getElementById('noOfLifts').value
-    // console.log(`noOfFloor is ${noOfFloor.value} and noOfLifts is ${noOfLifts}`)
+    // console.log(`noOfFloors is ${noOfFloors.value} and noOfLifts is ${noOfLifts}`)
     
-    if (isNaN(noOfFloor)) {
+    if (isNaN(noOfFloors)) {
         alert('enter a valid no of Floor')
         return
     }
-    noOfFloor = parseInt(noOfFloor)
-    if (noOfFloor > 10) {
+    noOfFloors = parseInt(noOfFloors)
+    if (noOfFloors > 10) {
         alert('Only 10 Floor are supported in the app currently !!')
         return
     }
-    genrateFloors(noOfFloor)
+    generateFloors(noOfFloors)
     
     if (isNaN(noOfLifts)) {
         alert('enter a valid no of Lifts')
@@ -33,7 +33,7 @@ document.getElementById('submit').addEventListener('click',(e)=>{
     e.preventDefault()
     validateLiftAndFloorEntries()})
 
-const genrateFloors = (n)=> {
+const generateFloors = (n)=> {
     // console.log(document.getElementById('simulationArea').innerHTML)
     document.getElementById('simulationArea').innerHTML = ''
     for (let i=0;i<n;i++) {
