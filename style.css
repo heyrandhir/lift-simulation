@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fff;
+    margin: 10px;
+}
+
+.button {
+    margin-bottom: 10px;
+}
+.lifts {
+    width: 80px;
+    height: 100px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid blue;
+    align-items: center;
+}
+
+.lifts p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.floor {
+    height: 100px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgb(240, 237, 237);
+    padding: 5px;
+    border-bottom: 2px grey solid;
+}
