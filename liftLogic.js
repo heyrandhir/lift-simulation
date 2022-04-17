@@ -26,7 +26,7 @@ const validateLiftAndFloorEntries = (e)=>{
         alert('Only 10 Lifts are supported in the app currently !!')
         return
     }
-    genrateLifts(noOfLifts)
+    generateLifts(noOfLifts)
 }
 
 document.getElementById('submit').addEventListener('click',(e)=>{
@@ -106,7 +106,7 @@ function findNearestFreeLift(flrNo) {
     return nearestAvailableLift
 }
 
-const genrateLifts = (n)=> {
+const generateLifts = (n)=> {
     for (let i=0;i<n;i++) {
         let liftNo = `Lift-${i}`
         const currLift = document.createElement('div');
