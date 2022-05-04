@@ -1,12 +1,24 @@
 let currLiftPositionArr = []
 let noOfFloors
 let noOfLifts
-let liftCalls = []
+let liftCallsQueue = []
+let intervalId
+let allLiftInfo
 
 document.getElementById('submit').addEventListener('click',(e)=>{
     e.preventDefault()
     startVirtualSimulation ()
 })
+
+function startVirtualSimulation () {
+    clearInterval(intervalId)
+    if (validateLiftAndFloorEntries()) {
+        generateFloors(noOfFloors)
+        generateLifts(noOfLifts)
+        addButtonFunctionalities()
+        intervalId = setInterval(fullfillLiftCallsQueue,1000)
+    }
+}
 
 const validateLiftAndFloorEntries = ()=>{
     
@@ -16,31 +28,26 @@ const validateLiftAndFloorEntries = ()=>{
     
     if (isNaN(noOfFloors)) {
         alert('enter a valid no of Floor')
-        return
+        return 0
     }
     noOfFloors = parseInt(noOfFloors)
     if (noOfFloors > 10) {
         alert('Only 10 Floor are supported in the app currently !!')
-        return
+        return 0
     }
     
     if (isNaN(noOfLifts)) {
         alert('enter a valid no of Lifts')
-        return
+        return 0
     }
     noOfLifts = parseInt(noOfLifts)
     if (noOfLifts > 10) {
         alert('Only 10 Lifts are supported in the app currently !!')
-        return
+        return 0
     }
+    return 1
 }
 
-function startVirtualSimulation () {
-    validateLiftAndFloorEntries()
-    generateFloors(noOfFloors)
-    generateLifts(noOfLifts)
-    addButtonFunctionalities()
-}
 
 const generateFloors = (n)=> {
     // console.log(document.getElementById('simulationArea').innerHTML)
@@ -56,8 +63,8 @@ const generateFloors = (n)=> {
         currFloor.innerHTML = `
         <p>${floorNo}</p>
         <div>
-        <button id=up${currLevel} class="button upBttn">🔼</button>
-        <button id=down${currLevel} class="button downBttn">🔽</button>
+        <button id=up${currLevel} class="button-floor upBttn">🔼</button>
+        <button id=down${currLevel} class="button-floor downBttn">🔽</button>
         </div>
         `;
         // console.log(currFloor)
@@ -66,20 +73,16 @@ const generateFloors = (n)=> {
 }
 
 function addButtonFunctionalities () {
-    const allButtons = document.querySelectorAll('.button')
+    const allButtons = document.querySelectorAll('.button-floor')
     allButtons.forEach(btn => {
         btn.addEventListener('click', ()=>{
             const targetFlr = parseInt(btn.id.slice(-1))
-            const liftToMove = findNearestFreeLift(targetFlr)
-            // console.log(`liftToMove is ${liftToMove}`)
-            if (liftToMove != -1) {
-                translateLift(liftToMove,targetFlr)
-            }
+            liftCallsQueue.push(targetFlr)
         })
     })
 }
 
-function translateLift(liftNo,targetLiftPosn) {
+function translateLiftOld(liftNo,targetLiftPosn) {
     const reqLift = document.getElementById(`Lift-${liftNo}`)
     let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
     // const targetLiftPosn = currLiftPositionArr[liftNo]
@@ -91,16 +94,29 @@ function translateLift(liftNo,targetLiftPosn) {
         if (currLiftPosn != targetLiftPosn) {  
             stepVector = parseInt(Math.sign(targetLiftPosn - currLiftPosn))
             currLiftPosn += stepVector
-            let intermediateFloor = `${(currLiftPosn)*-100}px`;
-            reqLift.classList.add("liftMotion")
-            reqLift.style.top = intermediateFloor
+            let intermediateFloor = `${(currLiftPosn)* -100}px`;
+            // reqLift.style.top = intermediateFloor
+            reqLift.style.transform = `translateY(-100px)`;
+            reqLift.style.transitionDuration = `2s`;
         } else {
             currLiftPositionArr[liftNo] = targetLiftPosn
-            reqLift.classList.remove("liftMotion")
             clearInterval(anim)
         }
     }
-    
+}
+
+function translateLift(liftNo,targetLiftPosn) {
+    const reqLift = document.getElementById(`Lift-${liftNo}`)
+    let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
+
+    if (currLiftPosn != targetLiftPosn) {
+        let unitsToMove = parseInt(Math.abs(targetLiftPosn - currLiftPosn))
+        let motionDis = -100 * parseInt(targetLiftPosn)
+        console.log(`dis is ${motionDis}`)
+        reqLift.style.transform = `translateY(${motionDis}px)`;
+        reqLift.style.transitionDuration = `${unitsToMove*2}s`;
+    } 
+    currLiftPositionArr[liftNo] = targetLiftPosn
 }
 
 function findNearestFreeLift(flrNo) {
@@ -121,18 +137,36 @@ function findNearestFreeLift(flrNo) {
 }
 
 const generateLifts = (n)=> {
+    allLiftInfo = []
     for (let i=0;i<n;i++) {
+        const currliftDetail = {}
         let liftNo = `Lift-${i}`
         const currLift = document.createElement('div');
         currLift.setAttribute('id',liftNo)
         currLift.classList.add('lifts');
         currLift.innerHTML = `
-            <p>Lift${i+1}</p>
-            <div class="lift" id="lift"></div>
+        <p>Lift${i+1}</p>
+        <div class="lift" id="lift"></div>
         `;
         currLift.style.left = `${(i+1)*90}px`;
         currLift.style.top = '0px'
         document.getElementById('Level-0').appendChild(currLift);
         currLiftPositionArr[i] = 0
+
+        currliftDetail.id = liftNo
+        currliftDetail.inMotion = false
+        allLiftInfo.push(currliftDetail)
     }
+}
+
+function fullfillLiftCallsQueue () {
+    if (!(liftCallsQueue.length)) return;
+    let targetFlr = liftCallsQueue[0]
+
+    const liftToMove = findNearestFreeLift(targetFlr)   
+    if (liftToMove != -1) {
+        translateLift(liftToMove,targetFlr)
+    }
+    liftCallsQueue.shift()
+
 }
