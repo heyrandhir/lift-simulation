@@ -1,9 +1,17 @@
 let currLiftPositionArr = []
+let noOfFloors
+let noOfLifts
+let liftCalls = []
+
+document.getElementById('submit').addEventListener('click',(e)=>{
+    e.preventDefault()
+    startVirtualSimulation ()
+})
 
 const validateLiftAndFloorEntries = ()=>{
     
-    let noOfFloors = document.getElementById('noOfFloors').value
-    let noOfLifts = document.getElementById('noOfLifts').value
+    noOfFloors = document.getElementById('noOfFloors').value
+    noOfLifts = document.getElementById('noOfLifts').value
     // console.log(`noOfFloors is ${noOfFloors.value} and noOfLifts is ${noOfLifts}`)
     
     if (isNaN(noOfFloors)) {
@@ -15,7 +23,6 @@ const validateLiftAndFloorEntries = ()=>{
         alert('Only 10 Floor are supported in the app currently !!')
         return
     }
-    generateFloors(noOfFloors)
     
     if (isNaN(noOfLifts)) {
         alert('enter a valid no of Lifts')
@@ -26,12 +33,14 @@ const validateLiftAndFloorEntries = ()=>{
         alert('Only 10 Lifts are supported in the app currently !!')
         return
     }
-    generateLifts(noOfLifts)
 }
 
-document.getElementById('submit').addEventListener('click',(e)=>{
-    e.preventDefault()
-    validateLiftAndFloorEntries()})
+function startVirtualSimulation () {
+    validateLiftAndFloorEntries()
+    generateFloors(noOfFloors)
+    generateLifts(noOfLifts)
+    addButtonFunctionalities()
+}
 
 const generateFloors = (n)=> {
     // console.log(document.getElementById('simulationArea').innerHTML)
@@ -54,7 +63,10 @@ const generateFloors = (n)=> {
         // console.log(currFloor)
         document.getElementById('simulationArea').appendChild(currFloor);
     }
-    allButtons = document.querySelectorAll('.button')
+}
+
+function addButtonFunctionalities () {
+    const allButtons = document.querySelectorAll('.button')
     allButtons.forEach(btn => {
         btn.addEventListener('click', ()=>{
             const targetFlr = parseInt(btn.id.slice(-1))
@@ -71,18 +83,20 @@ function translateLift(liftNo,targetLiftPosn) {
     const reqLift = document.getElementById(`Lift-${liftNo}`)
     let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
     // const targetLiftPosn = currLiftPositionArr[liftNo]
-    var anim = setInterval(animate,5)
+    var anim = setInterval(animate,100)
     
     function animate () {
         // console.log(`liftNo is ${liftNo}, currLiftPosn is ${currLiftPosn},targetLiftPosn is ${targetLiftPosn}`)
-
+        
         if (currLiftPosn != targetLiftPosn) {  
             stepVector = parseInt(Math.sign(targetLiftPosn - currLiftPosn))
             currLiftPosn += stepVector
             let intermediateFloor = `${(currLiftPosn)*-100}px`;
+            reqLift.classList.add("liftMotion")
             reqLift.style.top = intermediateFloor
         } else {
             currLiftPositionArr[liftNo] = targetLiftPosn
+            reqLift.classList.remove("liftMotion")
             clearInterval(anim)
         }
     }

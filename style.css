@@ -38,3 +38,7 @@ body {
     padding: 5px;
     border-bottom: 2px grey solid;
 }
+
+.liftMotion{
+    transition-duration: 5s;
+}
