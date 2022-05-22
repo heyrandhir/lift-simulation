@@ -113,7 +113,7 @@ function translateLift(liftNo,targetLiftPosn) {
         allLiftInfo[liftNo].inMotion = true
         let unitsToMove = parseInt(Math.abs(targetLiftPosn - currLiftPosn)+1)
         let motionDis = -100 * parseInt(targetLiftPosn)
-        console.log(`dis is ${motionDis}`)
+        // console.log(`dis is ${motionDis}`)
         reqLift.style.transitionTimingFunction = 'linear'
         reqLift.style.transform = `translateY(${motionDis}px)`;
         reqLift.style.transitionDuration = `${unitsToMove*2}s`;
