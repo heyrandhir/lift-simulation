@@ -120,21 +120,26 @@ function translateLift(liftNo,targetLiftPosn) {
         
         let timeInMs = unitsToMove*2000
         setTimeout(()=>{
-            allLiftInfo[liftNo].inMotion = false
             currLiftPositionArr[liftNo] = targetLiftPosn
-            
-            const leftGate = document.getElementById(`L${liftNo}left_gate`)
-            const rightGate = document.getElementById(`L${liftNo}right_gate`)
-            leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
-            rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
-
-            setTimeout(()=>{
-                leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
-                rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
-            },5000)
+            animateLiftsDoors(liftNo)
         },timeInMs)
-    } 
+    } else {
+        allLiftInfo[liftNo].inMotion = true
+        animateLiftsDoors(liftNo)
+    }
+}
+
+function animateLiftsDoors (liftNo) {
+    const leftGate = document.getElementById(`L${liftNo}left_gate`)
+    const rightGate = document.getElementById(`L${liftNo}right_gate`)
+    leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+    rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
     
+    setTimeout(()=>{
+        allLiftInfo[liftNo].inMotion = false
+        leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+        rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+    },5000)
 }
 
 function findNearestFreeLift(flrNo) {
@@ -146,13 +151,13 @@ function findNearestFreeLift(flrNo) {
     for (let i=0;i<currLiftPositionArr.length;i++) {
         if (allLiftInfo[i].inMotion === false)  {
             const currDiff = Math.abs(currLiftPositionArr[i] - flrNo)
-            if (currDiff < prevDiff && currDiff != 0) {
+            if (currDiff < prevDiff ) {
                 prevDiff = currDiff
                 nearestAvailableLift = i
             }
         }
     }
-    // console.log(`nearestAvailableLift is ${nearestAvailableLift}`)
+    console.log(`nearestAvailableLift is ${nearestAvailableLift}`)
     return nearestAvailableLift
 }
 
