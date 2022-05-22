@@ -157,7 +157,7 @@ function findNearestFreeLift(flrNo) {
             }
         }
     }
-    console.log(`nearestAvailableLift is ${nearestAvailableLift}`)
+    // console.log(`nearestAvailableLift is ${nearestAvailableLift}`)
     return nearestAvailableLift
 }
 
@@ -192,7 +192,7 @@ function fullfillLiftCallsQueue () {
     const liftToMove = findNearestFreeLift(targetFlr)   
     if (liftToMove != -1) {
         translateLift(liftToMove,targetFlr)
+        liftCallsQueue.shift()
     }
-    liftCallsQueue.shift()
 
 }
