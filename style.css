@@ -42,3 +42,37 @@ body {
 .liftMotion{
     transition-duration: 5s;
 }
+
+.lifts .gate {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    border: 1px solid #111;
+    background-color: rgb(142, 179, 247);
+}
+
+.gateLeft {
+    left: 0;
+}
+
+.gateRight {
+    right: 0;
+}
+
+.animateLiftsDoorsOnFloorStop  {
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-name: doorSimulation;
+}
+
+@keyframes doorSimulation {
+    from {
+        width: 50%;
+    }
+    50% {
+        width: 0%;
+    }
+    to {
+        width: 50%;
+    }
+}

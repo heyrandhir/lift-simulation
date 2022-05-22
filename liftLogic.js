@@ -122,6 +122,16 @@ function translateLift(liftNo,targetLiftPosn) {
         setTimeout(()=>{
             allLiftInfo[liftNo].inMotion = false
             currLiftPositionArr[liftNo] = targetLiftPosn
+            
+            const leftGate = document.getElementById(`L${liftNo}left_gate`)
+            const rightGate = document.getElementById(`L${liftNo}right_gate`)
+            leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+            rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+
+            setTimeout(()=>{
+                leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+                rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+            },5000)
         },timeInMs)
     } 
     
@@ -149,20 +159,21 @@ function findNearestFreeLift(flrNo) {
 const generateLifts = (n)=> {
     allLiftInfo = []
     for (let i=0;i<n;i++) {
-        const currliftDetail = {}
         let liftNo = `Lift-${i}`
         const currLift = document.createElement('div');
         currLift.setAttribute('id',liftNo)
         currLift.classList.add('lifts');
         currLift.innerHTML = `
-        <p>Lift${i+1}</p>
-        <div class="lift" id="lift"></div>
+            <p>Lift${i+1}</p>
+            <div class="gate gateLeft" id="L${i}left_gate"></div>
+            <div class="gate gateRight" id="L${i}right_gate"></div>
         `;
         currLift.style.left = `${(i+1)*90}px`;
         currLift.style.top = '0px'
         document.getElementById('Level-0').appendChild(currLift);
         currLiftPositionArr[i] = 0
-
+        
+        const currliftDetail = {}
         currliftDetail.id = liftNo
         currliftDetail.inMotion = false
         allLiftInfo.push(currliftDetail)
