@@ -110,13 +110,21 @@ function translateLift(liftNo,targetLiftPosn) {
     let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
 
     if (currLiftPosn != targetLiftPosn) {
-        let unitsToMove = parseInt(Math.abs(targetLiftPosn - currLiftPosn))
+        allLiftInfo[liftNo].inMotion = true
+        let unitsToMove = parseInt(Math.abs(targetLiftPosn - currLiftPosn)+1)
         let motionDis = -100 * parseInt(targetLiftPosn)
         console.log(`dis is ${motionDis}`)
+        reqLift.style.transitionTimingFunction = 'linear'
         reqLift.style.transform = `translateY(${motionDis}px)`;
         reqLift.style.transitionDuration = `${unitsToMove*2}s`;
+        
+        let timeInMs = unitsToMove*2000
+        setTimeout(()=>{
+            allLiftInfo[liftNo].inMotion = false
+            currLiftPositionArr[liftNo] = targetLiftPosn
+        },timeInMs)
     } 
-    currLiftPositionArr[liftNo] = targetLiftPosn
+    
 }
 
 function findNearestFreeLift(flrNo) {
@@ -126,10 +134,12 @@ function findNearestFreeLift(flrNo) {
     let nearestAvailableLift = -1
     // console.log(currLiftPositionArr,flrNo)
     for (let i=0;i<currLiftPositionArr.length;i++) {
-        const currDiff = Math.abs(currLiftPositionArr[i] - flrNo)
-        if (currDiff < prevDiff && currDiff != 0) {
-            prevDiff = currDiff
-            nearestAvailableLift = i
+        if (allLiftInfo[i].inMotion === false)  {
+            const currDiff = Math.abs(currLiftPositionArr[i] - flrNo)
+            if (currDiff < prevDiff && currDiff != 0) {
+                prevDiff = currDiff
+                nearestAvailableLift = i
+            }
         }
     }
     // console.log(`nearestAvailableLift is ${nearestAvailableLift}`)
