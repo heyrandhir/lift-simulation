@@ -4,6 +4,7 @@ let noOfLifts
 let liftCallsQueue = []
 let intervalId
 let allLiftInfo
+let activeLiftsDestinations = []
 
 document.getElementById('submit').addEventListener('click',(e)=>{
     e.preventDefault()
@@ -77,7 +78,10 @@ function addButtonFunctionalities () {
     allButtons.forEach(btn => {
         btn.addEventListener('click', ()=>{
             const targetFlr = parseInt(btn.id.slice(-1))
-            liftCallsQueue.push(targetFlr)
+            if (!activeLiftsDestinations.includes(targetFlr)) {
+                activeLiftsDestinations.push(targetFlr)
+                liftCallsQueue.push(targetFlr)
+            }
         })
     })
 }
@@ -121,15 +125,15 @@ function translateLift(liftNo,targetLiftPosn) {
         let timeInMs = unitsToMove*2000
         setTimeout(()=>{
             currLiftPositionArr[liftNo] = targetLiftPosn
-            animateLiftsDoors(liftNo)
+            animateLiftsDoors(liftNo,targetLiftPosn)
         },timeInMs)
     } else {
         allLiftInfo[liftNo].inMotion = true
-        animateLiftsDoors(liftNo)
+        animateLiftsDoors(liftNo,targetLiftPosn)
     }
 }
 
-function animateLiftsDoors (liftNo) {
+function animateLiftsDoors (liftNo,targetLiftPosn) {
     const leftGate = document.getElementById(`L${liftNo}left_gate`)
     const rightGate = document.getElementById(`L${liftNo}right_gate`)
     leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
@@ -138,7 +142,8 @@ function animateLiftsDoors (liftNo) {
     setTimeout(()=>{
         allLiftInfo[liftNo].inMotion = false
         leftGate.classList.toggle('animateLiftsDoorsOnFloorStop');
-        rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');
+        rightGate.classList.toggle('animateLiftsDoorsOnFloorStop');        
+        activeLiftsDestinations = activeLiftsDestinations.filter((item)=>item !== targetLiftPosn)
     },5000)
 }
 
