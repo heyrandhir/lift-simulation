@@ -9,13 +9,17 @@
     
 </head>
 <body>
-    <h2>Lift Simulation</h2>
-    <p>Source Code - <a href="https://github.com/heyrandhir/lift-simulation">https://github.com/heyrandhir/lift-simulation</a></p></br>
-    <label for="noOfFloors">No of Floors</label>
-    <input type="text" id="noOfFloors" name="noOfFloors"><br></br>
-    <label for="noOfLifts">No of Lifts</label>
-    <input type="text" id="noOfLifts" name="noOfLifts"><br></br>
-    <button id="submit" class="button">Generate</button>
+    <div id="liftDetails">
+        <div >
+            <h2>Lift Simulation</h2>
+            <p>Source Code - <a href="https://github.com/heyrandhir/lift-simulation">https://github.com/heyrandhir/lift-simulation</a></p>
+            <label for="noOfFloors">No of Floors</label>
+            <input type="text" id="noOfFloors" name="noOfFloors">
+            <label for="noOfLifts">No of Lifts</label>
+            <input type="text" id="noOfLifts" name="noOfLifts">
+            <button id="submit" class="button">Generate</button>
+        </div>
+    </div>
     <div id="simulationArea"></div>
     <script src="liftLogic.js">
     </script>

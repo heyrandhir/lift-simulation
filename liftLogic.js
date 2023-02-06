@@ -86,29 +86,6 @@ function addButtonFunctionalities () {
     })
 }
 
-function translateLiftOld(liftNo,targetLiftPosn) {
-    const reqLift = document.getElementById(`Lift-${liftNo}`)
-    let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
-    // const targetLiftPosn = currLiftPositionArr[liftNo]
-    var anim = setInterval(animate,100)
-    
-    function animate () {
-        // console.log(`liftNo is ${liftNo}, currLiftPosn is ${currLiftPosn},targetLiftPosn is ${targetLiftPosn}`)
-        
-        if (currLiftPosn != targetLiftPosn) {  
-            stepVector = parseInt(Math.sign(targetLiftPosn - currLiftPosn))
-            currLiftPosn += stepVector
-            let intermediateFloor = `${(currLiftPosn)* -100}px`;
-            // reqLift.style.top = intermediateFloor
-            reqLift.style.transform = `translateY(-100px)`;
-            reqLift.style.transitionDuration = `2s`;
-        } else {
-            currLiftPositionArr[liftNo] = targetLiftPosn
-            clearInterval(anim)
-        }
-    }
-}
-
 function translateLift(liftNo,targetLiftPosn) {
     const reqLift = document.getElementById(`Lift-${liftNo}`)
     let currLiftPosn = parseInt(currLiftPositionArr[liftNo])
@@ -117,7 +94,6 @@ function translateLift(liftNo,targetLiftPosn) {
         allLiftInfo[liftNo].inMotion = true
         let unitsToMove = parseInt(Math.abs(targetLiftPosn - currLiftPosn)+1)
         let motionDis = -100 * parseInt(targetLiftPosn)
-        // console.log(`dis is ${motionDis}`)
         reqLift.style.transitionTimingFunction = 'linear'
         reqLift.style.transform = `translateY(${motionDis}px)`;
         reqLift.style.transitionDuration = `${unitsToMove*2}s`;

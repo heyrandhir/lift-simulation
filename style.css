@@ -4,11 +4,11 @@
 
 body {
     background-color: #fff;
-    margin: 10px;
+    margin: 0.4rem;
 }
 
 .button {
-    margin-bottom: 10px;
+    margin-bottom: 0.4rem;
 }
 .lifts {
     width: 80px;
@@ -21,6 +21,40 @@ body {
     align-items: center;
 }
 
+h2 {
+    text-align: center;
+}
+
+#liftDetails{
+    display: flex;
+    flex-direction: column;
+    border-radius: 5%;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+#malfunctionLifts {
+    display: flex;
+    border-radius: 5%;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+#disabledLifts{
+    margin: 0.4rem;
+    padding: 0.4rem;
+    width: 4rem;
+}
+#btnDisable{
+    margin: 0.4rem;
+    padding: 0.4rem;
+    background-color: rgb(255, 213, 213);
+    border: 0.1rem solid red;
+    color: #ff0000;
+    border-radius: 5%;
+}
 .lifts p {
     position: absolute;
     top: 50%;
